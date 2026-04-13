@@ -21,12 +21,29 @@ class Servico(models.Model):
 
 # 📅 AGENDAMENTO
 class Agendamento(models.Model):
+    
+    STATUS_AGENDADO = 'agendado'
+    STATUS_EM_ANDAMENTO = 'em_andamento'
+    STATUS_FINALIZADO = 'finalizado'
+    STATUS_CANCELADO = 'cancelado'
+
+    STATUS_CHOICES = [
+        (STATUS_AGENDADO, 'Agendado'),
+        (STATUS_EM_ANDAMENTO, 'Em andamento'),
+        (STATUS_FINALIZADO, 'Finalizado'),
+        (STATUS_CANCELADO, 'Cancelado'),
+    ]
+
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     data = models.DateField()
     horario = models.TimeField()
+    
+    status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default=STATUS_AGENDADO,
+)
 
     def __str__(self):
         return f"{self.cliente} - {self.servico} - {self.data} - {self.horario}"
-    
-    

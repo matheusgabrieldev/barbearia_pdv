@@ -7,6 +7,14 @@
     <form method="POST">
         {% csrf_token %}
 
+        {% if form.non_field_errors %}
+            <div class="error">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <label for="{{ form.cliente.id_for_label }}">Cliente:</label>
         {{ form.cliente }}
 
@@ -18,6 +26,9 @@
 
         <label for="{{ form.horario.id_for_label }}">Hora:</label>
         {{ form.horario }}
+
+        <label for="{{ form.status.id_for_label }}">Status:</label>
+        {{ form.status }}
 
         <button type="submit">Salvar Agendamento</button>
     </form>
