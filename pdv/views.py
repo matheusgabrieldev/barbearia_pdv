@@ -131,15 +131,19 @@ def criar_agendamento(request):
 
 
 # CRIAR AGENDA SEMANAL
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
-from django.contrib.auth.decorators import login_required
+
+from .models import Agendamento
+
 
 @login_required
 def agenda_semanal(request):
     hoje = timezone.now()
 
-    # Descobre a segunda-feira da semana atual
+    # Segunda-feira da semana atual
     dia_de_hoje = hoje.weekday()
     inicio_semana = hoje - timedelta(days=dia_de_hoje)
     inicio_semana = inicio_semana.replace(
@@ -152,7 +156,7 @@ def agenda_semanal(request):
         hour=23, minute=59, second=59, microsecond=999999
     )
 
-    # Busca todos os agendamentos da semana
+    # Busca agendamentos da semana
     agendamentos = Agendamento.objects.filter(
         data__range=(inicio_semana, fim_de_semana)
     ).order_by('data', 'horario')
@@ -163,17 +167,16 @@ def agenda_semanal(request):
     for i in range(7):
         dia = inicio_semana + timedelta(days=i)
 
+        # ✔️ CORREÇÃO AQUI (data é DateField)
         agenda[dia.date()] = agendamentos.filter(
-            data__date=dia.date()
+            data=dia.date()
         )
 
-    # Envia para o HTML
     return render(request, 'pdv/agenda_semanal.html', {
         'agenda': agenda,
         'inicio_semana': inicio_semana,
         'fim_de_semana': fim_de_semana,
     })
-
 
 
 
