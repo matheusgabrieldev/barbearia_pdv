@@ -115,3 +115,82 @@ def criar_agendamento(request):
             return redirect('agendamentos')
 
     return render(request, 'pdv/criar_agendamento.html', {'form': form})
+
+
+# CRIAR AGENDA SEMANAL
+@login_required
+def agenda_semanal(request):
+    # Lógica para criar agenda semanal
+    return render(request, 'pdv/agenda_semanal.html')
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
