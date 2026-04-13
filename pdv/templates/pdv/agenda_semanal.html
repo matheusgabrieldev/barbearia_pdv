@@ -1,6 +1,48 @@
 {% extends "pdv/base.html" %}
 
 {% block content %}
-<h2>Agenda Semanal</h2>
-<p>Pagina inicial da agenda semanal.</p>
+<section class="page-header page-header--compact">
+    <div>
+        <p class="eyebrow">Agenda Semanal</p>
+        <h1>Panorama da semana</h1>
+        <p class="section-description">Explore a agenda semanal com visão clara dos horários e status do atendimento.</p>
+    </div>
+    <div class="header-actions">
+        <a href="{% url 'criar_agendamento' %}" class="btn btn-primary">Agendar novo</a>
+    </div>
+</section>
+
+<div class="week-grid">
+    {% for dia, eventos in agenda.items %}
+    <article class="day-column">
+        <div class="day-header">
+            <p class="day-name">{{ dia|date:'D' }}</p>
+            <span class="day-date">{{ dia|date:'d M' }}</span>
+        </div>
+
+        <div class="day-body">
+            {% if eventos %}
+                {% for agendamento in eventos %}
+                <div class="event-card {% if agendamento.status == 'cancelado' %}event-card--danger{% endif %}">
+                    <div>
+                        <strong>{{ agendamento.cliente }}</strong>
+                        <span>{{ agendamento.servico }}</span>
+                    </div>
+                    <div class="event-footer">
+                        <span class="event-time">{{ agendamento.horario|time:'H:i' }}</span>
+                        <span class="status-pill {% if agendamento.status == 'cancelado' %}tag-red{% elif agendamento.status == 'em_andamento' %}tag-blue{% else %}tag-emerald{% endif %}">{{ agendamento.get_status_display }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-card">
+                    <p>Dia livre. Nenhum compromisso agendado.</p>
+                </div>
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+</div>
 {% endblock %}
+
+

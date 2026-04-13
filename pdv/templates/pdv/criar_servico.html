@@ -1,17 +1,47 @@
 {% extends 'pdv/base.html' %}
 
 {% block content %}
-<div class="form-box">
-    <h2>Criar Novo Serviço</h2>
-    <form method="POST">
+<section class="page-header page-header--compact">
+    <div>
+        <p class="eyebrow">Serviços</p>
+        <h1>Adicionar serviço</h1>
+        <p class="section-description">Informe o nome e o preço do serviço para tornar sua barbearia ainda mais profissional.</p>
+    </div>
+</section>
+
+<div class="table-card">
+    <form method="POST" class="panel-form">
         {% csrf_token %}
-        <label for="{{ form.nome.id_for_label }}">Nome:</label>
-        {{ form.nome }}
 
-        <label for="{{ form.preco.id_for_label }}">Preço:</label>
-        {{ form.preco }}
+        {% if form.non_field_errors %}
+        <div class="form-alert">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-        <button type="submit">Salvar Serviço</button>
+        <div class="form-grid">
+            <div class="form-field">
+                {{ form.nome.label_tag }}
+                {{ form.nome }}
+                {% for error in form.nome.errors %}
+                <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-field">
+                {{ form.preco.label_tag }}
+                {{ form.preco }}
+                {% for error in form.preco.errors %}
+                <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button type="submit" class="btn btn-primary">Salvar serviço</button>
+            <a href="{% url 'servicos' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock %}

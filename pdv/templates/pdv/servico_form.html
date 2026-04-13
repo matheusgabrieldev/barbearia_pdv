@@ -1,11 +1,11 @@
-{% extends 'pdv/base.html' %}
+{% extends "pdv/base.html" %}
 
 {% block content %}
 <section class="page-header page-header--compact">
     <div>
-        <p class="eyebrow">Clientes</p>
-        <h1>Cadastrar cliente</h1>
-        <p class="section-description">Registre clientes com um formulário rápido e elegante.</p>
+        <p class="eyebrow">Serviços</p>
+        <h1>Cadastrar serviço</h1>
+        <p class="section-description">Adicione um novo serviço com nome e preço em formato premium.</p>
     </div>
 </section>
 
@@ -30,17 +30,17 @@
                 {% endfor %}
             </div>
             <div class="form-field">
-                {{ form.telefone.label_tag }}
-                {{ form.telefone }}
-                {% for error in form.telefone.errors %}
+                {{ form.preco.label_tag }}
+                {{ form.preco }}
+                {% for error in form.preco.errors %}
                 <p class="field-error">{{ error }}</p>
                 {% endfor %}
             </div>
         </div>
 
         <div class="button-row">
-            <button type="submit" class="btn btn-primary">Salvar cliente</button>
-            <a href="{% url 'clientes' %}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar serviço</button>
+            <a href="{% url 'servicos' %}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

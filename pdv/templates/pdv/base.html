@@ -4,34 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDV Barbearia</title>
+    <title>PDV Barbearia | Gestão Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'global/styles.css' %}">
 </head>
 <body>
-    {% if user.is_authenticated %}
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>💈 PDV Barbearia</h2>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
-            <a href="{% url 'clientes' %}" class="nav-link">Clientes</a>
-            <a href="{% url 'servicos' %}" class="nav-link">Serviços</a>
-            <a href="{% url 'agendamentos' %}" class="nav-link">Agendamentos</a>
-            <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
-        </nav>
-    </div>
-    {% endif %}
+    <div class="app-shell">
+        <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
 
-    <div class="main-content">
         {% if user.is_authenticated %}
-        <header class="topbar">
-            <h1>PDV Barbearia</h1>
-        </header>
+        <aside class="sidebar">
+            <div class="brand-panel">
+                <div class="brand-mark">💈</div>
+                <div>
+                    <p class="brand-label">PDV Barbearia</p>
+                    <p class="brand-subtitle">Gestão premium para barbearias</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+                <a href="{% url 'agenda_semanal' %}" class="nav-link">Agenda</a>
+                <a href="{% url 'agendamentos' %}" class="nav-link">Agendamentos</a>
+                <a href="{% url 'clientes' %}" class="nav-link">Clientes</a>
+                <a href="{% url 'servicos' %}" class="nav-link">Serviços</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="{% url 'logout' %}" class="nav-link logout">Sair da conta</a>
+            </div>
+        </aside>
         {% endif %}
 
-        <main>
-            {% block content %}{% endblock %}
+        <main class="content-area">
+            {% if user.is_authenticated %}
+            <header class="topbar">
+                <div class="topbar-left">
+                    <label for="sidebar-toggle" class="hamburger" aria-label="Abrir menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                    <div>
+                        <p class="topbar-label">Painel</p>
+                        <h1 class="topbar-title">Controle da barbearia</h1>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="icon-btn" aria-label="Notificações">🔔</button>
+                    <button class="icon-btn" aria-label="Ajuda">❔</button>
+                    <div class="user-chip">{{ user.username|default:'Usuário' }}</div>
+                </div>
+            </header>
+            {% endif %}
+
+            <section class="page-body">
+                {% block content %}{% endblock %}
+            </section>
         </main>
     </div>
 </body>

@@ -5,7 +5,7 @@
     <div>
         <p class="eyebrow">Serviços</p>
         <h1>Catálogo de serviços</h1>
-        <p class="section-description">Organize seus serviços com destaque para preço e experiência premium.</p>
+        <p class="section-description">Organize seus serviços com destaque para preço e duração estimada.</p>
     </div>
     <div class="header-actions">
         <a href="{% url 'criar_servico' %}" class="btn btn-primary">Adicionar serviço</a>
@@ -18,18 +18,18 @@
         <div class="service-head">
             <div>
                 <h3>{{ s.nome }}</h3>
-                <p class="muted">Atendimento premium com foco em qualidade e velocidade.</p>
+                <p class="muted">Atendimento focado em qualidade e fidelização.</p>
             </div>
             <span class="status-pill tag-blue">R$ {{ s.preco }}</span>
         </div>
         <div class="service-meta">
             <span>Duração estimada: 45 min</span>
-            <span>Serviço pensado para fidelizar clientes</span>
+            <span>Experiência premium para clientes</span>
         </div>
     </article>
     {% empty %}
     <div class="empty-state">
-        <p>Não há serviços cadastrados. Adicione opções ao seu catálogo.</p>
+        <p>Sem serviços cadastrados. Adicione opções ao catálogo.</p>
     </div>
     {% endfor %}
 </div>
