@@ -12,6 +12,7 @@
             <th>Serviço</th>
             <th>Data</th>
             <th>Horário</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
             <td>{{ a.servico }}</td>
             <td>{{ a.data }}</td>
             <td>{{ a.horario }}</td>
+            <td>{{ a.get_status_display }}</td>
         </tr>
         {% endfor %}
     </tbody>
