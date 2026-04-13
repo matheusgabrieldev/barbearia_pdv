@@ -1,0 +1,12 @@
+{% extends "pdv/base.html" %}
+
+{% block content %}
+<div class="form-box">
+    <h2>{{ titulo }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+</div>
+{% endblock %}

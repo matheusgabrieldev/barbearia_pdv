@@ -1,0 +1,24 @@
+{% extends "pdv/base.html" %}
+
+{% block content %}
+<h2>Clientes</h2>
+
+<a class="btn" href="{% url 'criar_cliente' %}">+ Novo Cliente</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in clientes %}
+        <tr>
+            <td>{{ c.nome }}</td>
+            <td>{{ c.telefone }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

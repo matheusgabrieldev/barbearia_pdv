@@ -1,0 +1,28 @@
+{% extends "pdv/base.html" %}
+
+{% block content %}
+<h2>Agendamentos</h2>
+
+<a class="btn" href="{% url 'criar_agendamento' %}">+ Novo Agendamento</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Horário</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in agendamentos %}
+        <tr>
+            <td>{{ a.cliente }}</td>
+            <td>{{ a.servico }}</td>
+            <td>{{ a.data }}</td>
+            <td>{{ a.horario }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

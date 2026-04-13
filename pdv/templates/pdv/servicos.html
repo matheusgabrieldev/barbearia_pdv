@@ -1,0 +1,24 @@
+{% extends "pdv/base.html" %}
+
+{% block content %}
+<h2>Serviços</h2>
+
+<a class="btn" href="{% url 'criar_servico' %}">+ Novo Serviço</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in servicos %}
+        <tr>
+            <td>{{ s.nome }}</td>
+            <td>R$ {{ s.preco }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

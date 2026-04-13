@@ -1,0 +1,17 @@
+{% extends 'pdv/base.html' %}
+
+{% block content %}
+<div class="form-box">
+    <h2>Criar Novo Cliente</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="{{ form.nome.id_for_label }}">Nome:</label>
+        {{ form.nome }}
+
+        <label for="{{ form.telefone.id_for_label }}">Telefone:</label>
+        {{ form.telefone }}
+
+        <button type="submit">Salvar Cliente</button>
+    </form>
+</div>
+{% endblock %}

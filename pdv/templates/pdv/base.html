@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Barbearia</title>
+    <link rel="stylesheet" href="{% static 'global/styles.css' %}">
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>💈 PDV Barbearia</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+            <a href="{% url 'clientes' %}" class="nav-link">Clientes</a>
+            <a href="{% url 'servicos' %}" class="nav-link">Serviços</a>
+            <a href="{% url 'agendamentos' %}" class="nav-link">Agendamentos</a>
+            <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
+        </nav>
+    </div>
+    {% endif %}
+
+    <div class="main-content">
+        {% if user.is_authenticated %}
+        <header class="topbar">
+            <h1>PDV Barbearia</h1>
+        </header>
+        {% endif %}
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'pdv/base.html' %}
+
+{% block content %}
+<div class="form-box">
+    <h2>Criar Novo Agendamento</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="{{ form.cliente.id_for_label }}">Cliente:</label>
+        {{ form.cliente }}
+
+        <label for="{{ form.servico.id_for_label }}">Serviço:</label>
+        {{ form.servico }}
+
+        <label for="{{ form.data.id_for_label }}">Data:</label>
+        {{ form.data }}
+
+        <label for="{{ form.horario.id_for_label }}">Hora:</label>
+        {{ form.horario }}
+
+        <button type="submit">Salvar Agendamento</button>
+    </form>
+</div>
+{% endblock %}
