@@ -53,11 +53,20 @@ def register_view(request):
 @login_required
 def dashboard(request):
     agendamentos = Agendamento.objects.all()
+    clientes_count = Cliente.objects.count()
+    servicos_count = Servico.objects.count()
     total_vendas = sum(a.servico.preco for a in agendamentos)
+    hoje = timezone.localdate()
+    agendamentos_today = agendamentos.filter(data=hoje)
+    next_agendamentos = agendamentos.order_by('data', 'horario')[:6]
 
     return render(request, 'pdv/dashboard.html', {
         'agendamentos': agendamentos,
-        'total_vendas': total_vendas
+        'clientes_count': clientes_count,
+        'servicos_count': servicos_count,
+        'total_vendas': total_vendas,
+        'agendamentos_today': agendamentos_today,
+        'next_agendamentos': next_agendamentos,
     })
 
 
