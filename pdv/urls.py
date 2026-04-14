@@ -17,6 +17,7 @@ urlpatterns = [
 
     path('agendamentos/', agendamentos_view, name='agendamentos'),
     path('agendamentos/criar/', criar_agendamento, name='criar_agendamento'),
+    path('agendamentos/<int:id>/status/', mudar_status_agendamento, name='mudar_status'),
     
     path('agenda/', agenda_semanal, name='agenda_semanal'),
 
