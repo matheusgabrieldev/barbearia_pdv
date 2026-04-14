@@ -52,12 +52,18 @@ def register_view(request):
 # 📊 DASHBOARD
 @login_required
 def dashboard(request):
+
     agendamentos = Agendamento.objects.all()
+
     clientes_count = Cliente.objects.count()
     servicos_count = Servico.objects.count()
-    total_vendas = sum(a.servico.preco for a in agendamentos)
+
+    pagos = agendamentos.filter(status_pagamento="pago")
+    total_vendas = sum(a.servico.preco for a in pagos)
+
     hoje = timezone.localdate()
     agendamentos_today = agendamentos.filter(data=hoje)
+
     next_agendamentos = agendamentos.order_by('data', 'horario')[:6]
 
     return render(request, 'pdv/dashboard.html', {
@@ -69,6 +75,7 @@ def dashboard(request):
         'next_agendamentos': next_agendamentos,
     })
 
+    
 
 # 👥 LISTAR CLIENTES
 @login_required
@@ -128,6 +135,25 @@ def criar_agendamento(request):
             return redirect('agendamentos')
 
     return render(request, 'pdv/criar_agendamento.html', {'form': form})
+
+
+@login_required
+def mudar_status_agendamento(request, id):
+
+    agendamento = Agendamento.objects.get(id=id)
+
+    if agendamento.status_pagamento == "pendente":
+        agendamento.status_pagamento = "pago"
+
+    elif agendamento.status_pagamento == "pago":
+        pass  # já está pago, não faz nada
+
+    elif agendamento.status_pagamento == "cancelado":
+        return redirect('agendamentos')  # não permite mudar
+
+    agendamento.save()
+
+    return redirect('agendamentos')
 
 
 # CRIAR AGENDA SEMANAL
