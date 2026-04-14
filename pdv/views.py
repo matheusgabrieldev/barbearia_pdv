@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 from .models import Cliente, Servico, Agendamento
-from .forms import ClienteForm, ServicoForm, AgendamentoForm, UserRegistrationForm
+from .forms import ClienteForm, ServicoForm, AgendamentoForm, CriarAgendamentoForm, UserRegistrationForm
 
 
 # 🔐 LOGIN
@@ -118,42 +118,47 @@ def criar_servico(request):
 
 
 # 📅 LISTAR AGENDAMENTOS
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Agendamento
+
 @login_required
 def agendamentos_view(request):
-    agendamentos = Agendamento.objects.all()
-    return render(request, 'pdv/agendamentos.html', {'agendamentos': agendamentos})
+    q = request.GET.get('q')
+    status = request.GET.get('status')
 
+    agendamentos = Agendamento.objects.select_related('cliente', 'servico').all()
 
+    if q:
+        agendamentos = agendamentos.filter(
+            Q(cliente__nome__icontains=q) |
+            Q(servico__nome__icontains=q)
+        )
+
+    if status:
+        agendamentos = agendamentos.filter(status_atendimento=status)
+
+    return render(request, 'pdv/agendamentos.html', {
+        'agendamentos': agendamentos
+    })
 # ➕ CRIAR AGENDAMENTO
 @login_required
 def criar_agendamento(request):
-    form = AgendamentoForm(request.POST or None)
+    form = CriarAgendamentoForm(request.POST or None)
 
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            agendamento = form.save(commit=False)
+            agendamento.status_atendimento = Agendamento.STATUS_AGENDADO
+            agendamento.status_pagamento = Agendamento.STATUS_PENDENTE
+            agendamento.save()
             return redirect('agendamentos')
 
     return render(request, 'pdv/criar_agendamento.html', {'form': form})
 
 
-@login_required
-def mudar_status_agendamento(request, id):
 
-    agendamento = Agendamento.objects.get(id=id)
-
-    if agendamento.status_pagamento == "pendente":
-        agendamento.status_pagamento = "pago"
-
-    elif agendamento.status_pagamento == "pago":
-        pass  # já está pago, não faz nada
-
-    elif agendamento.status_pagamento == "cancelado":
-        return redirect('agendamentos')  # não permite mudar
-
-    agendamento.save()
-
-    return redirect('agendamentos')
 
 
 # CRIAR AGENDA SEMANAL
@@ -206,44 +211,62 @@ def agenda_semanal(request):
 
 
 
+@login_required
+def mudar_status_agendamento(request, id):
+
+    agendamento = Agendamento.objects.get(id=id)
+
+    if agendamento.status_pagamento == "pendente":
+        agendamento.status_pagamento = "pago"
+
+    elif agendamento.status_pagamento == "pago":
+        pass  # já está pago, não faz nada
+
+    agendamento.save()
+
+    return redirect('agendamentos')
 
 
 
 
+@login_required
+def pagar_agendamento(request,id):
+    
+    agendamento = Agendamento.objects.get(id=id)
+    
+    if agendamento.status_pagamento == "pendente":
+        
+        agendamento.status_pagamento = "pago"
+        
+        agendamento.save()
+        
+    return redirect('agendamentos')
 
 
+@login_required
+def finalizar_agendamento(request, id):
+ 
+    agendamento = Agendamento.objects.get(id=id)
+    
+    if agendamento.status_atendimento == "em_andamento":
+        
+        agendamento.status_atendimento = "finalizado"
 
+        agendamento.save()
+            
+    return redirect('agendamentos')
 
+@login_required
+def iniciar_agendamento(request, id):
+    agendamento = Agendamento.objects.get(id=id)
 
+    if agendamento.status_atendimento == "agendado":
+        
+        agendamento.status_atendimento = "em_andamento"
+    
+        agendamento.save()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return redirect('agendamentos')
 
 
 

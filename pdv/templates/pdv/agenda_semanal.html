@@ -30,14 +30,14 @@
         <div class="day-body">
             {% if eventos %}
                 {% for agendamento in eventos %}
-                <article class="event-card {% if agendamento.status == 'cancelado' %}event-card--danger{% endif %}">
+                <article class="event-card {% if agendamento.status_atendimento == 'cancelado' %}event-card--danger{% endif %}">
                     <div class="event-time-block">
                         <span class="event-time">{{ agendamento.horario|time:'H:i' }}</span>
                     </div>
                     <div class="event-body">
                         <p class="event-service">{{ agendamento.servico|default:'Serviço não informado' }}</p>
                         <h3>{{ agendamento.cliente }}</h3>
-                        <span class="status-pill {% if agendamento.status == 'cancelado' %}tag-red{% elif agendamento.status == 'em_andamento' %}tag-blue{% elif agendamento.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ agendamento.get_status_display }}</span>
+                        <span class="status-pill {% if agendamento.status_atendimento == 'cancelado' %}tag-red{% elif agendamento.status_atendimento == 'em_andamento' %}tag-blue{% elif agendamento.status_atendimento == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ agendamento.get_status_atendimento_display }}</span>
                     </div>
                 </article>
                 {% endfor %}

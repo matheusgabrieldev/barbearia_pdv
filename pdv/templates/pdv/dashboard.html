@@ -56,7 +56,7 @@
                     <span>{{ item.data|date:'d/m/Y' }}</span>
                     <span>{{ item.horario|time:'H:i' }}</span>
                 </div>
-                <span class="status-pill {% if item.status == 'cancelado' %}tag-red{% elif item.status == 'em_andamento' %}tag-blue{% elif item.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ item.get_status_display }}</span>
+                <span class="status-pill {% if item.status_atendimento == 'cancelado' %}tag-red{% elif item.status_atendimento == 'em_andamento' %}tag-blue{% elif item.status_atendimento == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ item.get_status_atendimento_display }}</span>
             </article>
             {% endfor %}
         </div>
@@ -84,7 +84,7 @@
                         <h3>{{ item.cliente }}</h3>
                         <p>{{ item.servico }}</p>
                     </div>
-                    <span class="status-pill {% if item.status == 'cancelado' %}tag-red{% elif item.status == 'em_andamento' %}tag-blue{% elif item.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ item.get_status_display }}</span>
+                    <span class="status-pill {% if item.status_atendimento == 'cancelado' %}tag-red{% elif item.status_atendimento == 'em_andamento' %}tag-blue{% elif item.status_atendimento == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ item.get_status_atendimento_display }}</span>
                 </article>
                 {% endfor %}
             {% else %}
