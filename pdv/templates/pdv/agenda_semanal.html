@@ -1,42 +1,49 @@
 {% extends "pdv/base.html" %}
 
 {% block content %}
-<section class="page-header page-header--compact">
+<section class="page-header">
     <div>
         <p class="eyebrow">Agenda Semanal</p>
-        <h1>Panorama da semana</h1>
-        <p class="section-description">Explore a agenda semanal com visão clara dos horários e status do atendimento.</p>
+        <h1>Visão da semana</h1>
+        <p class="section-description">Analise a semana inteira em um formato moderno de calendário com destaque para horários e status.</p>
     </div>
     <div class="header-actions">
-        <a href="{% url 'criar_agendamento' %}" class="btn btn-primary">Agendar novo</a>
+        <a href="{% url 'criar_agendamento' %}" class="btn btn-primary">Novo agendamento</a>
     </div>
 </section>
+
+<div class="week-summary">
+    <span>{{ inicio_semana|date:'d/m/Y' }} → {{ fim_de_semana|date:'d/m/Y' }}</span>
+</div>
 
 <div class="week-grid">
     {% for dia, eventos in agenda.items %}
     <article class="day-column">
-        <div class="day-header">
-            <p class="day-name">{{ dia|date:'D' }}</p>
-            <span class="day-date">{{ dia|date:'d M' }}</span>
-        </div>
+        <header class="day-header">
+            <div>
+                <p class="day-name">{{ dia|date:'D' }}</p>
+                <h2 class="day-date">{{ dia|date:'d M' }}</h2>
+            </div>
+            <span class="day-badge">{{ eventos|length }} eventos</span>
+        </header>
 
         <div class="day-body">
             {% if eventos %}
                 {% for agendamento in eventos %}
-                <div class="event-card {% if agendamento.status == 'cancelado' %}event-card--danger{% endif %}">
-                    <div>
-                        <strong>{{ agendamento.cliente }}</strong>
-                        <span>{{ agendamento.servico }}</span>
-                    </div>
-                    <div class="event-footer">
+                <article class="event-card {% if agendamento.status == 'cancelado' %}event-card--danger{% endif %}">
+                    <div class="event-time-block">
                         <span class="event-time">{{ agendamento.horario|time:'H:i' }}</span>
-                        <span class="status-pill {% if agendamento.status == 'cancelado' %}tag-red{% elif agendamento.status == 'em_andamento' %}tag-blue{% else %}tag-emerald{% endif %}">{{ agendamento.get_status_display }}</span>
                     </div>
-                </div>
+                    <div class="event-body">
+                        <p class="event-service">{{ agendamento.servico|default:'Serviço não informado' }}</p>
+                        <h3>{{ agendamento.cliente }}</h3>
+                        <span class="status-pill {% if agendamento.status == 'cancelado' %}tag-red{% elif agendamento.status == 'em_andamento' %}tag-blue{% elif agendamento.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ agendamento.get_status_display }}</span>
+                    </div>
+                </article>
                 {% endfor %}
             {% else %}
                 <div class="empty-card">
-                    <p>Dia livre. Nenhum compromisso agendado.</p>
+                    <p>Nenhum agendamento</p>
                 </div>
             {% endif %}
         </div>
@@ -44,5 +51,4 @@
     {% endfor %}
 </div>
 {% endblock %}
-
 

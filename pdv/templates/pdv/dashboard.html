@@ -5,7 +5,7 @@
     <div>
         <p class="eyebrow">Dashboard</p>
         <h1>Visão geral da barbearia</h1>
-        <p class="section-description">Métricas em tempo real, agenda do dia e próximos compromissos em um painel novo.</p>
+        <p class="section-description">Métricas e insights do seu negócio em um painel premium e responsivo.</p>
     </div>
     <div class="header-actions">
         <a href="{% url 'criar_agendamento' %}" class="btn btn-primary">Novo agendamento</a>
@@ -15,22 +15,22 @@
 <div class="stats-grid">
     <article class="stat-card">
         <p class="stat-label">Agendamentos</p>
-        <h2>{{ agendamentos|length }}</h2>
-        <span class="status-pill tag-blue">Ativos</span>
+        <h2>{{ agendamentos|length|default:'0' }}</h2>
+        <span class="status-pill tag-blue">Agenda</span>
     </article>
     <article class="stat-card">
         <p class="stat-label">Clientes</p>
-        <h2>{{ clientes_count }}</h2>
+        <h2>{{ clientes_count|default:'0' }}</h2>
         <span class="status-pill">Cadastros</span>
     </article>
     <article class="stat-card">
         <p class="stat-label">Serviços</p>
-        <h2>{{ servicos_count }}</h2>
-        <span class="status-pill">Ofertas</span>
+        <h2>{{ servicos_count|default:'0' }}</h2>
+        <span class="status-pill">Catálogo</span>
     </article>
     <article class="stat-card">
         <p class="stat-label">Receita</p>
-        <h2>R$ {{ total_vendas }}</h2>
+        <h2>R$ {{ total_vendas|default:'0,00' }}</h2>
         <span class="status-pill tag-emerald">Resultado</span>
     </article>
 </div>
@@ -40,7 +40,7 @@
         <div class="panel-head">
             <div>
                 <p class="eyebrow">Agenda do dia</p>
-                <h2>Compromissos de hoje</h2>
+                <h2>Atendimentos de hoje</h2>
             </div>
         </div>
 
@@ -56,13 +56,13 @@
                     <span>{{ item.data|date:'d/m/Y' }}</span>
                     <span>{{ item.horario|time:'H:i' }}</span>
                 </div>
-                <span class="status-pill {% if item.status == 'cancelado' %}tag-red{% elif item.status == 'em_andamento' %}tag-blue{% else %}tag-emerald{% endif %}">{{ item.get_status_display }}</span>
+                <span class="status-pill {% if item.status == 'cancelado' %}tag-red{% elif item.status == 'em_andamento' %}tag-blue{% elif item.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ item.get_status_display }}</span>
             </article>
             {% endfor %}
         </div>
         {% else %}
         <div class="empty-state">
-            <p>Não há agendamentos para hoje. Crie um novo atendimento e mantenha o fluxo controlado.</p>
+            <p>Sem agendamentos hoje. Aproveite para planejar a próxima semana.</p>
         </div>
         {% endif %}
     </div>
@@ -71,25 +71,27 @@
         <div class="panel-head">
             <div>
                 <p class="eyebrow">Próximos</p>
-                <h2>Eventos futuros</h2>
+                <h2>Agenda futura</h2>
             </div>
         </div>
 
         <div class="timeline-list">
-            {% for item in next_agendamentos %}
-            <article class="timeline-card">
-                <div>
-                    <span class="timeline-time">{{ item.data|date:'d/m' }} • {{ item.horario|time:'H:i' }}</span>
-                    <h3>{{ item.cliente }}</h3>
-                    <p>{{ item.servico }}</p>
-                </div>
-                <span class="status-pill {% if item.status == 'cancelado' %}tag-red{% elif item.status == 'em_andamento' %}tag-blue{% else %}tag-emerald{% endif %}">{{ item.get_status_display }}</span>
-            </article>
-            {% empty %}
+            {% if next_agendamentos %}
+                {% for item in next_agendamentos %}
+                <article class="timeline-card">
+                    <div>
+                        <span class="timeline-time">{{ item.data|date:'d/m' }} • {{ item.horario|time:'H:i' }}</span>
+                        <h3>{{ item.cliente }}</h3>
+                        <p>{{ item.servico }}</p>
+                    </div>
+                    <span class="status-pill {% if item.status == 'cancelado' %}tag-red{% elif item.status == 'em_andamento' %}tag-blue{% elif item.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ item.get_status_display }}</span>
+                </article>
+                {% endfor %}
+            {% else %}
             <div class="empty-state">
-                <p>Sem próximos agendamentos. Aproveite para organizar sua semana.</p>
+                <p>Sem próximos agendamentos. Use esse momento para renovar o calendário.</p>
             </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'global/styles.css' %}">
 </head>
 <body>
-    <div class="app-shell">
+    <div class="app-shell {% if user.is_authenticated %}has-sidebar{% endif %}">
         <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
 
         {% if user.is_authenticated %}
@@ -20,7 +20,7 @@
                 <div class="brand-mark">💈</div>
                 <div>
                     <p class="brand-label">PDV Barbearia</p>
-                    <p class="brand-subtitle">Gestão premium para barbearias</p>
+                    <p class="brand-subtitle">Gestão de agenda, clientes e serviços</p>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a href="{% url 'logout' %}" class="nav-link logout">Sair da conta</a>
+                <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
             </div>
         </aside>
         {% endif %}
@@ -48,8 +48,8 @@
                         <span></span>
                     </label>
                     <div>
-                        <p class="topbar-label">Painel</p>
-                        <h1 class="topbar-title">Controle da barbearia</h1>
+                        <p class="topbar-label">Dashboard</p>
+                        <h1 class="topbar-title">Barbearia Pro</h1>
                     </div>
                 </div>
 

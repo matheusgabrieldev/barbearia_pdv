@@ -5,7 +5,7 @@
     <div>
         <p class="eyebrow">Clientes</p>
         <h1>Base de clientes</h1>
-        <p class="section-description">Visualize contatos, telefones e dados de atendimento em uma lista limpa e organizada.</p>
+        <p class="section-description">Visualize contatos, telefones e atendimento em uma lista clara e responsiva.</p>
     </div>
     <div class="header-actions">
         <a href="{% url 'criar_cliente' %}" class="btn btn-primary">Novo cliente</a>
@@ -23,10 +23,10 @@
     <div class="table-card__header">
         <div>
             <h2>Clientes cadastrados</h2>
-            <p class="muted">Gerencie clientes e acesse rapidamente o histórico de atendimento.</p>
+            <p class="muted">Acompanhe facilmente os contatos e mantenha o banco de clientes organizado.</p>
         </div>
     </div>
-    <div class="table-wrap">
+    <div class="table-wrap responsive-table">
         <table>
             <thead>
                 <tr>
@@ -38,9 +38,9 @@
             <tbody>
                 {% for c in clientes %}
                 <tr>
-                    <td>{{ c.nome }}</td>
-                    <td>{{ c.telefone }}</td>
-                    <td><span class="status-pill tag-emerald">Ativo</span></td>
+                    <td data-label="Nome">{{ c.nome }}</td>
+                    <td data-label="Telefone">{{ c.telefone }}</td>
+                    <td data-label="Status"><span class="status-pill tag-emerald">Ativo</span></td>
                 </tr>
                 {% empty %}
                 <tr>

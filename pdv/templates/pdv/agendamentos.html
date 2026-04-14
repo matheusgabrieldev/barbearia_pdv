@@ -4,8 +4,8 @@
 <section class="page-header">
     <div>
         <p class="eyebrow">Agendamentos</p>
-        <h1>Atendimentos</h1>
-        <p class="section-description">Liste, filtre e acompanhe todos os compromissos com design claro e profissional.</p>
+        <h1>Agenda de atendimentos</h1>
+        <p class="section-description">Gerencie os compromissos, acompanhe pagamentos e atualize o status rapidamente.</p>
     </div>
     <div class="header-actions">
         <a href="{% url 'criar_agendamento' %}" class="btn btn-primary">Novo agendamento</a>
@@ -15,10 +15,10 @@
 <div class="toolbar">
     <div class="input-group">
         <span class="input-icon">🔍</span>
-        <input type="search" placeholder="Buscar por cliente ou serviço">
+        <input type="search" placeholder="Buscar por cliente, serviço ou status">
     </div>
     <div class="filter-group">
-        <label>Filtro</label>
+        <label>Filtrar</label>
         <select>
             <option>Todos os status</option>
             <option>Agendado</option>
@@ -32,12 +32,12 @@
 <div class="table-card">
     <div class="table-card__header">
         <div>
-            <h2>Agendamentos em aberto</h2>
-            <p class="muted">Acompanhe o andamento de cada atendimento em um painel moderno.</p>
+            <h2>Agendamentos ativos</h2>
+            <p class="muted">Acompanhe cada atendimento com status de serviço e pagamento em destaque.</p>
         </div>
     </div>
 
-    <div class="table-wrap">
+    <div class="table-wrap responsive-table">
         <table>
             <thead>
                 <tr>
@@ -45,21 +45,30 @@
                     <th>Serviço</th>
                     <th>Data</th>
                     <th>Horário</th>
-                    <th>Status</th>
+                    <th>Status atendimento</th>
+                    <th>Status pagamento</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for a in agendamentos %}
                 <tr>
-                    <td>{{ a.cliente }}</td>
-                    <td>{{ a.servico }}</td>
-                    <td>{{ a.data|date:'d/m/Y' }}</td>
-                    <td>{{ a.horario|time:'H:i' }}</td>
-                    <td><span class="status-pill {% if a.status == 'cancelado' %}tag-red{% elif a.status == 'em_andamento' %}tag-blue{% else %}tag-emerald{% endif %}">{{ a.get_status_display }}</span></td>
+                    <td data-label="Cliente">{{ a.cliente }}</td>
+                    <td data-label="Serviço">{{ a.servico }}</td>
+                    <td data-label="Data">{{ a.data|date:'d/m/Y' }}</td>
+                    <td data-label="Horário">{{ a.horario|time:'H:i' }}</td>
+                    <td data-label="Status atendimento"><span class="status-pill {% if a.status == 'cancelado' %}tag-red{% elif a.status == 'em_andamento' %}tag-blue{% elif a.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ a.get_status_display }}</span></td>
+                    <td data-label="Status pagamento"><span class="status-pill {% if a.status_pagamento == 'pago' %}tag-emerald{% elif a.status_pagamento == 'pendente' %}tag-yellow{% else %}tag-secondary{% endif %}">{{ a.status_pagamento|default:'Pendente' }}</span></td>
+                    <td class="action-buttons" data-label="Ações">
+                        <a href="/agendamentos/{{ a.id }}/pagar/" class="btn btn-success btn-sm">Pagar</a>
+                        <a href="/agendamentos/{{ a.id }}/em_andamento/" class="btn btn-info btn-sm">Iniciar</a>
+                        <a href="/agendamentos/{{ a.id }}/finalizar/" class="btn btn-strong btn-sm">Finalizar</a>
+                        <a href="/agendamentos/{{ a.id }}/cancelar/" class="btn btn-danger btn-sm">Cancelar</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="empty-row">Nenhum agendamento encontrado.</td>
+                    <td colspan="7" class="empty-row">Nenhum agendamento encontrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>
