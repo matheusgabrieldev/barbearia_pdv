@@ -60,10 +60,9 @@
                     <td data-label="Status atendimento"><span class="status-pill {% if a.status == 'cancelado' %}tag-red{% elif a.status == 'em_andamento' %}tag-blue{% elif a.status == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">{{ a.get_status_display }}</span></td>
                     <td data-label="Status pagamento"><span class="status-pill {% if a.status_pagamento == 'pago' %}tag-emerald{% elif a.status_pagamento == 'pendente' %}tag-yellow{% else %}tag-secondary{% endif %}">{{ a.status_pagamento|default:'Pendente' }}</span></td>
                     <td class="action-buttons" data-label="Ações">
-                        <a href="/agendamentos/{{ a.id }}/pagar/" class="btn btn-success btn-sm">Pagar</a>
-                        <a href="/agendamentos/{{ a.id }}/em_andamento/" class="btn btn-info btn-sm">Iniciar</a>
-                        <a href="/agendamentos/{{ a.id }}/finalizar/" class="btn btn-strong btn-sm">Finalizar</a>
-                        <a href="/agendamentos/{{ a.id }}/cancelar/" class="btn btn-danger btn-sm">Cancelar</a>
+                        <a href="{% url 'iniciar_agendamento' a.id %}" class="btn btn-success btn-sm">Iniciar</a>
+                        <a href="{% url 'finalizar_agendamento' a.id %}" class="btn btn-info btn-sm">Finalizar</a>
+                        <a href="{% url 'pagar_agendamento' a.id %}" class="btn btn-warning btn-sm">Pagar</a>
                     </td>
                 </tr>
                 {% empty %}
