@@ -39,13 +39,23 @@ class AgendamentoForm(forms.ModelForm):
 class CriarAgendamentoForm(forms.ModelForm):
     
     def clean(self):
-        
         cleaned_data = super().clean()
-        data = cleaned_data.get('data')   
+        data = cleaned_data.get('data')
         horario = cleaned_data.get('horario')
+
         if data and horario:
-            if Agendamento.objects.filter(data=data, horario=horario).exists():
-                raise forms.ValidationError("Já existe um agendamento para este dia e horário.")
+            conflito = Agendamento.objects.filter(
+                data=data,
+                horario=horario,
+                status_atendimento__in=[
+                    Agendamento.STATUS_AGENDADO,
+                    Agendamento.STATUS_EM_ANDAMENTO
+                ]
+            ).exists()
+
+            if conflito:
+                raise forms.ValidationError("Já existe um agendamento ativo nesse horário.")
+
         return cleaned_data
     
     class Meta:

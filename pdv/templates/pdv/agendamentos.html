@@ -38,9 +38,7 @@
     <div class="table-card__header">
         <div>
             <h2>Agendamentos ativos</h2>
-            <p class="muted">
-                Acompanhe cada atendimento com status de serviço e pagamento em destaque.
-            </p>
+            <p class="muted">Acompanhe cada atendimento com status de serviço e pagamento em destaque.</p>
         </div>
     </div>
 
@@ -57,7 +55,6 @@
                     <th>Ações</th>
                 </tr>
             </thead>
-
             <tbody>
                 {% for a in agendamentos %}
                 <tr>
@@ -65,72 +62,38 @@
                     <td data-label="Serviço">{{ a.servico }}</td>
                     <td data-label="Data">{{ a.data|date:'d/m/Y' }}</td>
                     <td data-label="Horário">{{ a.horario|time:'H:i' }}</td>
-
-                    <!-- STATUS ATENDIMENTO -->
                     <td data-label="Status atendimento">
-                        <span class="status-pill 
-                            {% if a.status_atendimento == 'cancelado' %}tag-red
-                            {% elif a.status_atendimento == 'em_andamento' %}tag-blue
-                            {% elif a.status_atendimento == 'finalizado' %}tag-emerald
-                            {% elif a.status_atendimento == 'agendado' %}tag-secondary
-                            {% else %}tag-secondary
-                            {% endif %}">
-
-                            {{ a.status_atendimento }}
-
+                        <span class="status-pill {% if a.status_atendimento == 'cancelado' %}tag-red{% elif a.status_atendimento == 'em_andamento' %}tag-blue{% elif a.status_atendimento == 'finalizado' %}tag-emerald{% else %}tag-secondary{% endif %}">
+                            {{ a.get_status_atendimento_display }}
                         </span>
                     </td>
-
-                    <!-- STATUS PAGAMENTO -->
                     <td data-label="Status pagamento">
-                        <span class="status-pill 
-                            {% if a.status_pagamento == 'pago' %}tag-emerald
-                            {% elif a.status_pagamento == 'pendente' %}tag-yellow
-                            {% else %}tag-secondary
-                            {% endif %}">
-
+                        <span class="status-pill {% if a.status_pagamento == 'pago' %}tag-emerald{% elif a.status_pagamento == 'pendente' %}tag-yellow{% else %}tag-secondary{% endif %}">
                             {% if a.status_pagamento == 'pago' %}
                                 Pago
                             {% else %}
                                 Pendente
                             {% endif %}
-
                         </span>
                     </td>
-
-                    <!-- AÇÕES -->
                     <td class="action-buttons" data-label="Ações">
-
                         {% if a.status_atendimento == 'agendado' %}
-                            <a href="{% url 'iniciar_agendamento' a.id %}" class="btn btn-success btn-sm">
-                                Iniciar
-                            </a>
+                            <a href="{% url 'iniciar_agendamento' a.id %}" class="btn btn-success btn-sm">Iniciar</a>
                         {% endif %}
-
                         {% if a.status_atendimento == 'em_andamento' %}
-                            <a href="{% url 'finalizar_agendamento' a.id %}" class="btn btn-info btn-sm">
-                                Finalizar
-                            </a>
+                            <a href="{% url 'finalizar_agendamento' a.id %}" class="btn btn-info btn-sm">Finalizar</a>
                         {% endif %}
-
                         {% if a.status_atendimento == 'finalizado' and a.status_pagamento != 'pago' %}
-                            <a href="{% url 'pagar_agendamento' a.id %}" class="btn btn-warning btn-sm">
-                                Pagar
-                            </a>
+                            <a href="{% url 'pagar_agendamento' a.id %}" class="btn btn-warning btn-sm">Pagar</a>
                         {% endif %}
-
                     </td>
                 </tr>
-
                 {% empty %}
                 <tr>
-                    <td colspan="7" class="empty-row">
-                        Nenhum agendamento encontrado.
-                    </td>
+                    <td colspan="7" class="empty-row">Nenhum agendamento encontrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>
-
         </table>
     </div>
 </div>
